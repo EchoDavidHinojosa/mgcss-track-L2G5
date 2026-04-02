@@ -1,4 +1,4 @@
-package MantenimientoPractica.practica;
+package mantenimiento.practica;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

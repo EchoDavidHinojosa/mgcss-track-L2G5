@@ -1,1 +1,0 @@
-package mantenimientopractica.practica.domain;
