@@ -1,1 +1,0 @@
-package MantenimientoPractica.Practica.domain;
