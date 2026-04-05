@@ -53,6 +53,7 @@ public class solicitud {
     }
 
     public void setFechaCreacion(LocalDate fechaCreacion) {
+
         this.fechaCreacion = fechaCreacion;
     }
 
@@ -69,6 +70,7 @@ public class solicitud {
     }
 
     public void setTecnicoAsignado(tecnico tecnicoAsignado) {
+
         this.tecnicoAsignado = tecnicoAsignado;
     }
 
@@ -77,6 +79,7 @@ public class solicitud {
     }
 
     public void setFechaCierre(LocalDate fechaCierre) {
+
         this.fechaCierre = fechaCierre;
     }
 }
