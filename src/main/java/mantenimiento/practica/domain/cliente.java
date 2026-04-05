@@ -6,7 +6,7 @@ public class cliente {
     private Long id;
     private String nombre;
     private String email;
-    private cliente tipocliente;
+    private cliente tipocliente;// estandar o premiumm
 
     public cliente() {
 

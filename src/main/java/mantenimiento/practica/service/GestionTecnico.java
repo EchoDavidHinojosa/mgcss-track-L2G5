@@ -35,4 +35,14 @@ public class GestionTecnico {
         }
         return disponibles;
     }
+    public void mostrar(){
+        System.out.println("Tecnico activos");
+        for(tecnico t: lista){
+            if(t.isActivo()){
+
+                System.out.println(t);//Mirar si llama directamente al tostringo hay que llamarlo
+            }
+
+        }
+    }
 }

@@ -12,7 +12,6 @@ public class solicitud {
     private estadoSolicitud estado; // "ABIERTA", "EN_PROCESO", "CERRADA"
     private tecnico tecnicoAsignado;
     private LocalDate fechaCierre;
-
     public solicitud() {
     }
 
@@ -61,17 +60,28 @@ public class solicitud {
         return estado;
     }
 
-    public void setEstado(estadoSolicitud estado) {
+    public boolean setEstado(estadoSolicitud estado) {//True si se hace efectivo el cambio, false si da error de negocio
+        if(estado==estadoSolicitud.CERRADA&& this.estado!=estadoSolicitud.EN_PROCESO){
+            System.out.println("No se puede hacer el cambio de estado");
+            return false;
+        }
         this.estado = estado;
+        return true;
     }
 
     public tecnico getTecnicoAsignado() {
         return tecnicoAsignado;
     }
 
-    public void setTecnicoAsignado(tecnico tecnicoAsignado) {
-
+    public boolean setTecnicoAsignado(tecnico tecnicoAsignado) {//true se pudo hacer false no
+        if(tecnicoAsignado.isActivo()){
         this.tecnicoAsignado = tecnicoAsignado;
+        return true;
+        }
+        else{
+            System.out.println("El tecnico no está disponible");
+            return false;
+        }
     }
 
     public LocalDate getFechaCierre() {

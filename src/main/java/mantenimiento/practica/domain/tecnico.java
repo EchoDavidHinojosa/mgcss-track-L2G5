@@ -23,8 +23,13 @@ public class tecnico {
 
     public boolean isActivo() { return activo; }
 
-    public void setActivo(boolean activo) {
+    public boolean setActivo(boolean activo) {//False si fala true si se puede hacer
+        if(activo==false&&!this.isActivo()){
+            System.out.println("No puedes usar a alguien que no sea activo");
+            return false;
+        }
         this.activo = activo;
+        return true;
     }
 
     @Override
