@@ -9,6 +9,7 @@ public class cliente {
     private cliente tipocliente;
 
     public cliente() {
+
     }
 
     public cliente(Long id, String nombre, String email, cliente tipocliente) {
