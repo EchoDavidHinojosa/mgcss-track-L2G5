@@ -5,7 +5,7 @@ import java.util.List;
 
 import mantenimiento.practica.domain.tecnico;
 
-public class GestionTecnico {
+public class gestionTecnico {
 
     private List<tecnico> lista = new ArrayList<>();
 
