@@ -12,8 +12,7 @@ public class solicitud {
     private estadoSolicitud estado; // "ABIERTA", "EN_PROCESO", "CERRADA"
     private tecnico tecnicoAsignado;
     private LocalDate fechaCierre;
-    public solicitud() {
-    }
+
 
     public solicitud(Long id, cliente clienteAsignado, String descripcion) {
         this.id = id;
