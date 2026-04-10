@@ -38,7 +38,7 @@ public class gestionclientes {
         return null;
     }
 
-    public void listarclientes() {
+    public List <cliente> listarclientes() {
         System.out.println("Clientes");
         for (cliente c : clientes) {
 
@@ -47,5 +47,6 @@ public class gestionclientes {
                     "  Email :" + c.getEmail());
         }
 
+        return clientes;
     }
 }

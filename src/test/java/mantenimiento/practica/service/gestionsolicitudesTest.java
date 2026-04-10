@@ -51,15 +51,15 @@ public class gestionsolicitudesTest {
 
     @Test
     public void testAsignarTecnicoActivoDebeSerExitoso() {
-        // Preparar
+
         solicitud s = new solicitud(1L, new cliente(), "Reparación PC");
         tecnico ana = new tecnico(1, "Ana", "Hardware");
         ana.setActivo(true); // Nos aseguramos de que esté activa
 
-        // Actuar
+
         boolean resultado = s.setTecnicoAsignado(ana);
 
-        // Comprobar
+
         assertTrue(resultado, "Debería permitir asignar un técnico activo");
         assertNotNull(s.getTecnicoAsignado());
         assertEquals("Ana", s.getTecnicoAsignado().getNombre());
@@ -67,15 +67,15 @@ public class gestionsolicitudesTest {
 
     @Test
     public void testAsignarTecnicoInactivoDebeFallar() {
-        // Preparar
+
         solicitud s = new solicitud(1L, new cliente(), "Reparación PC");
         tecnico pedro = new tecnico(2, "Pedro", "Software");
-        pedro.setActivo(false); // Marcamos al técnico como inactivo
+        pedro.setActivo(false);
 
-        // Actuar
+
         boolean resultado = s.setTecnicoAsignado(pedro);
 
-        // Comprobar
+
         assertFalse(resultado, "No debería permitir asignar un técnico inactivo");
         assertNull(s.getTecnicoAsignado(), "El técnico asignado debe seguir siendo null");
     }
