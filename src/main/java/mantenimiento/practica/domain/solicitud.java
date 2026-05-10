@@ -10,6 +10,7 @@ public class solicitud {
     private static final Logger logger = LoggerFactory.getLogger(solicitud.class);
 
     private Long id;
+    private int historico; // Empieza en 0 y va aumentando conforme se van cambiando los estado,la más alta es la última actualización
     private cliente clienteAsignado;
     private String descripcion;
     private LocalDate fechaCreacion;
@@ -24,6 +25,24 @@ public class solicitud {
         this.descripcion = descripcion;
         this.fechaCreacion = LocalDate.now();
         this.estado = estadoSolicitud.ABIERTA;
+        this.historico=0;
+    }
+    //Este constructor se usará para dejar registro cuando se cambie el estado de ahí que se aumente el histórico en 1
+    public solicitud(solicitud s){
+        this.id = s.getId();
+        this.clienteAsignado = s.getClienteAsignado();
+        this.descripcion = s.getDescripcion();
+        this.fechaCreacion = s.getFechaCreacion();
+        this.estado = s.getEstado();
+        this.historico=s.getHistorico()+1;
+    }
+
+    public int getHistorico(){
+        return this.historico;
+    }
+
+    public void setHistorico(int historico){
+        this.historico=historico;
     }
 
     public Long getId() {

@@ -89,7 +89,7 @@ public class gestionsolicitudesTest {
     public void testGestorCerrarSolicitudSoloSiEstaEnProceso() {
         gestionsolicitudes gestor = new gestionsolicitudes();
         solicitud s = gestor.crearSolicitud(new cliente(), "Virus");
-
+        s.setHistorico(0);
         // 1. Intentamos cerrar directamente (Debe fallar)
         boolean cerradaFallo = gestor.cerrarSolicitud(s.getId());
         assertFalse(cerradaFallo, "No se puede cerrar si está ABIERTA");
@@ -101,9 +101,54 @@ public class gestionsolicitudesTest {
 
         // 3. Volvemos a intentar cerrar (Ahora debe funcionar)
         boolean cerradaExito = gestor.cerrarSolicitud(s.getId());
+
         assertTrue(cerradaExito, "Debería poder cerrarse ahora");
-        assertEquals(estadoSolicitud.CERRADA, s.getEstado());
-        assertNotNull(s.getFechaCierre(), "Debe asignarse fecha de cierre");
+        solicitud solicitudActualizada=gestor.consultarSolicitud(s.getId());
+        assertEquals(estadoSolicitud.CERRADA, solicitudActualizada.getEstado());
+        assertNotNull(solicitudActualizada.getFechaCierre(), "Debe asignarse fecha de cierre");
+    }
+
+    @Test
+    public void testReabrirSolicitudCerradaDebeSerExitoso() {
+        gestionsolicitudes gestor = new gestionsolicitudes();
+
+        solicitud s = gestor.crearSolicitud(new cliente(), "PC dañada");
+
+        tecnico t = new tecnico(1, "Luis", "Hardware");
+        t.setActivo(true);
+
+        gestor.asignarTecnico(s.getId(), t);
+        gestor.cerrarSolicitud(s.getId());
+
+        boolean resultado = gestor.rearbirSolicitud(s.getId());
+
+        assertTrue(resultado, "Debería permitir reabrir una solicitud cerrada");
+
+        solicitud solicitudActualizada = gestor.consultarSolicitud(s.getId());
+
+        assertEquals(
+                estadoSolicitud.EN_PROCESO,
+                solicitudActualizada.getEstado(),
+                "La nueva solicitud debe quedar EN_PROCESO"
+        );
+    }
+
+    @Test
+    public void testReabrirSolicitudNoCerradaDebeFallar() {
+        gestionsolicitudes gestor = new gestionsolicitudes();
+
+        solicitud s = gestor.crearSolicitud(new cliente(), "Sin internet");
+
+        boolean resultado = gestor.rearbirSolicitud(s.getId());
+
+        assertFalse(resultado, "No debería reabrir solicitudes que no estén cerradas");
+
+        solicitud solicitudActualizada = gestor.consultarSolicitud(s.getId());
+
+        assertEquals(
+                estadoSolicitud.ABIERTA,
+                solicitudActualizada.getEstado()
+        );
     }
 
     @Test
