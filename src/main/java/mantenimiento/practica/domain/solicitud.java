@@ -1,9 +1,13 @@
 package mantenimiento.practica.domain;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.time.LocalDate;
 
 public class solicitud {
+
+
+    private static final Logger logger = LoggerFactory.getLogger(solicitud.class);
 
     private Long id;
     private cliente clienteAsignado;
@@ -51,7 +55,6 @@ public class solicitud {
     }
 
     public void setFechaCreacion(LocalDate fechaCreacion) {
-
         this.fechaCreacion = fechaCreacion;
     }
 
@@ -59,9 +62,11 @@ public class solicitud {
         return estado;
     }
 
-    public boolean setEstado(estadoSolicitud estado) {//True si se hace efectivo el cambio, false si da error de negocio
-        if(estado==estadoSolicitud.CERRADA&& this.estado!=estadoSolicitud.EN_PROCESO){
-            System.out.println("No se puede hacer el cambio de estado");
+    public boolean setEstado(estadoSolicitud estado) {
+
+        if (estado == estadoSolicitud.CERRADA && this.estado != estadoSolicitud.EN_PROCESO) {
+
+            logger.warn("No se puede hacer el cambio de estado a CERRADA. El estado actual es: {}", this.estado);
             return false;
         }
         this.estado = estado;
@@ -72,13 +77,14 @@ public class solicitud {
         return tecnicoAsignado;
     }
 
-    public boolean setTecnicoAsignado(tecnico tecnicoAsignado) {//true se pudo hacer false no
-        if(tecnicoAsignado.isActivo()){
-        this.tecnicoAsignado = tecnicoAsignado;
-        return true;
-        }
-        else{
-            System.out.println("El tecnico no está disponible");
+    public boolean setTecnicoAsignado(tecnico tecnicoAsignado) {
+
+        if (tecnicoAsignado.isActivo()) {
+            this.tecnicoAsignado = tecnicoAsignado;
+            return true;
+        } else {
+
+            logger.warn("El tecnico no está disponible para ser asignado a la solicitud ID: {}", this.id);
             return false;
         }
     }
@@ -88,7 +94,6 @@ public class solicitud {
     }
 
     public void setFechaCierre(LocalDate fechaCierre) {
-
         this.fechaCierre = fechaCierre;
     }
 }
