@@ -45,7 +45,9 @@ La implementación planteado ha necesitado modificar tanto solicitudes como gest
     - testReabrirSolicitudCerradaDebeSerExitoso()
     - testGestorCerrarSolicitudSoloSiEstaEnProceso() 
   - Se han creado unos test nuevo para comprobar el buen funcionaiento de la nueva función.
-
+- SolicitudServiceTest
+  -
+  - Se ha modificado el test de setestado para la nueva actualización de dinámicas del histórico.
 
 Para poder actualizarlos a la nueva dinámica de crear una solicitud con un número mayor de historico.
   

@@ -82,11 +82,11 @@ class SolicitudServiceTest {
 
         // 2. Ejecución: Intentar cerrar
         boolean cerrado = service.cerrarSolicitud(s.getId());
-
+        solicitud Actualizado= service.consultarSolicitud(s.getId());
         // 3. Verificación
         assertTrue(cerrado);
-        assertEquals(estadoSolicitud.CERRADA, s.getEstado());
-        assertNotNull(s.getFechaCierre());
+        assertEquals(estadoSolicitud.CERRADA, Actualizado.getEstado());
+        assertNotNull(Actualizado.getFechaCierre());
     }
 
     @Test
