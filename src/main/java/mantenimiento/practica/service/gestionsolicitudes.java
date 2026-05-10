@@ -6,8 +6,7 @@ import mantenimiento.practica.domain.tecnico;
 import mantenimiento.practica.domain.estadoSolicitud; // Importamos el Enum
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class gestionsolicitudes {
 
@@ -38,31 +37,86 @@ public class gestionsolicitudes {
         return false;
     }
 
+    //Modificamos este método para que vaya dejando las solicitudes como histórico y en las solicitudes vamos a teer un int
+    // que marque cual es la versión más actualizada de la solicitud.
+
     public boolean cerrarSolicitud(Long idSolicitud) {
+        List<solicitud> tmp = new ArrayList<>();
         for (solicitud s : solicitudes) {
             if (s.getId().equals(idSolicitud)) {
+                tmp.add(s);
+            }
+        }
+        solicitud MasReciente = Collections.max(
+                tmp,
+                Comparator.comparingInt(solicitud::getHistorico)
+        );
+        if (MasReciente !=null){
 
-                // Comparamos usando el Enum directamente
-                if (s.getEstado() == estadoSolicitud.EN_PROCESO) {
-                    s.setEstado(estadoSolicitud.CERRADA);
-                    s.setFechaCierre(LocalDate.now());
-                    return true;
-                } else {
-                    System.out.println("Error: La solicitud debe estar EN_PROCESO para poder cerrarse.");
-                    return false;
-                }
+            if (MasReciente.getEstado() == estadoSolicitud.EN_PROCESO) {
+                solicitud registro= new solicitud(MasReciente);
+                registro.setEstado(estadoSolicitud.CERRADA);
+                registro.setFechaCierre(LocalDate.now());
+                this.solicitudes.add(registro);
+                return true;
+            } else {
+                System.out.println("Error: La solicitud debe estar EN_PROCESO para poder cerrarse.");
+                return false;
+            }
+        }
+        return false;
+    }
+
+
+    public boolean rearbirSolicitud(Long idSolicitud){
+        List<solicitud> tmp = new ArrayList<>();
+        boolean encontrada=false;
+        for (solicitud s : solicitudes) {
+            if (s.getId().equals(idSolicitud)) {
+                tmp.add(s);
+                encontrada=true;
+            }
+        }
+        solicitud MasReciente = Collections.max(
+                tmp,
+                Comparator.comparingInt(solicitud::getHistorico)
+        );
+        if (encontrada==false){
+            return false;
+        }
+        if (MasReciente !=null){
+
+            if (MasReciente.getEstado() == estadoSolicitud.CERRADA) {
+                solicitud registro= new solicitud(MasReciente);
+                registro.setEstado(estadoSolicitud.EN_PROCESO);
+                registro.setFechaCierre(LocalDate.now());
+                this.solicitudes.add(registro);
+                return true;
+            } else {
+                System.out.println("Error: La solicitud debe estar CERRADA para poder reabrise.");
+                return false;
             }
         }
         return false;
     }
 
     public solicitud consultarSolicitud(Long id) {
+        List<solicitud> tmp = new ArrayList<>();
+        boolean encontrada=false;
         for (solicitud s : solicitudes) {
             if (s.getId().equals(id)) {
-                return s;
+                tmp.add(s);
+                encontrada=true;
             }
         }
-        return null;
+        if (encontrada== false){
+            return null;
+        }
+        solicitud MasReciente = Collections.max(
+                tmp,
+                Comparator.comparingInt(solicitud::getHistorico)
+        );
+        return MasReciente;
     }
 
     public List<solicitud> listarSolicitudes() {
