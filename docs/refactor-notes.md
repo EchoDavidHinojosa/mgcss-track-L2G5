@@ -13,6 +13,7 @@ Este es el código de uno de los códigos que dan esta problemática para soluci
 Antes de modificiar la clase solicitudes.java:
 ![AntesDelCambio.png](AntesDelCambio.png)
 
+
 Después de modificar el código se nota una reducción en la dificultad de mantenimiento, basandose en la métrica de Sonar
                                 ![DespuesDelCambio.png](DespuesDelCambio.png)
 
