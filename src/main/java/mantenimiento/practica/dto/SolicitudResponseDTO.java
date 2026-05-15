@@ -14,6 +14,59 @@ public class SolicitudResponseDTO {
     private LocalDate fechaCreacion;
     private int versionHistorico; // Mapeamos tu campo 'historico'
 
-    // Getters y Setters
-    // ... (Genera los getters y setters para estos campos)
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getNombreCliente() {
+        return nombreCliente;
+    }
+
+    public void setNombreCliente(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
+    }
+
+    public String getNombreTecnico() {
+        return nombreTecnico;
+    }
+
+    public void setNombreTecnico(String nombreTecnico) {
+        this.nombreTecnico = nombreTecnico;
+    }
+
+    public LocalDate getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(LocalDate fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public int getVersionHistorico() {
+        return versionHistorico;
+    }
+
+    public void setVersionHistorico(int versionHistorico) {
+        this.versionHistorico = versionHistorico;
+    }
 }
