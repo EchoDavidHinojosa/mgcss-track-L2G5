@@ -6,13 +6,13 @@ public class cliente {
     private Long id;
     private String nombre;
     private String email;
-    private cliente tipocliente;// estandar o premiumm
+    private boolean tipocliente;// true es premium
 
     public cliente() {
 
     }
 
-    public cliente(Long id, String nombre, String email, cliente tipocliente) {
+    public cliente(Long id, String nombre, String email, boolean tipocliente) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
@@ -43,11 +43,11 @@ public class cliente {
         this.email = email;
     }
 
-    public cliente getTipocliente() {
+    public boolean getTipocliente() {
         return tipocliente;
     }
 
-    public void setTipocliente(cliente tipocliente) {
+    public void setTipocliente(boolean tipocliente) {
         this.tipocliente = tipocliente;
     }
 }

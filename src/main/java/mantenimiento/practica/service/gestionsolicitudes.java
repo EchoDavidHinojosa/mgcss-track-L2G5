@@ -20,6 +20,18 @@ public class gestionsolicitudes {
         return nueva;
     }
 
+    public solicitud crearSolicitud(String descripcion) {
+
+        cliente clienteDummy =
+                new cliente(
+                        1L,
+                        "Cliente API",
+                        "api@test.com",
+                        false);
+
+        return this.crearSolicitud(clienteDummy,descripcion);
+    }
+
     public boolean asignarTecnico(Long idSolicitud, tecnico tecnico) {//False si no lo asigna true si sí
         if (!tecnico.isActivo()) {
             System.out.println("Tecnico no activo ");
