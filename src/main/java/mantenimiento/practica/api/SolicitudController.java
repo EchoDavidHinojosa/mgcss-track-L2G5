@@ -7,12 +7,9 @@ import mantenimiento.practica.domain.solicitud;
 import mantenimiento.practica.service.gestionsolicitudes;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import io.swagger.v3.oas.annotations.tags.Tag;
-
+import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Parameter;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/solicitudes")
@@ -43,6 +40,29 @@ public class SolicitudController {
         solicitud solicitud = servicioSolicitud.crearSolicitud(requestDTO.getDescripcion());
 
         SolicitudResponseDTO response =solicitudMapper.toResponseDTO(solicitud);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(
+            summary = "Obtener una solicitud por ID",
+            description = "Recupera los detalles de una solicitud específica mediante su identificador único"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Solicitud encontrada"),
+            @ApiResponse(responseCode = "404", description = "Solicitud no encontrada")
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<SolicitudResponseDTO> obtenerPorId(
+            @Parameter(description = "ID de la solicitud a buscar", example = "1")
+            @PathVariable Long id) {
+
+
+        solicitud solicitud = servicioSolicitud.consultarSolicitud(id);
+
+
+        SolicitudResponseDTO response = solicitudMapper.toResponseDTO(solicitud);
+
 
         return ResponseEntity.ok(response);
     }

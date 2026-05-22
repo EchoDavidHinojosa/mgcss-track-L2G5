@@ -1,7 +1,8 @@
 package mantenimiento.practica.api;
 
 import mantenimiento.practica.domain.solicitud;
-
+import org.springframework.stereotype.Component;
+@Component
 public class SolicitudMapper {
 
     public SolicitudResponseDTO toResponseDTO(solicitud solicitud) {

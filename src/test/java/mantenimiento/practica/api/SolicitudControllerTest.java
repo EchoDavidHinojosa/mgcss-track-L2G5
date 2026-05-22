@@ -18,6 +18,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @WebMvcTest(SolicitudController.class)
 @Import(SolicitudMapper.class)
@@ -66,6 +67,25 @@ class SolicitudControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+
+    @Test
+    @DisplayName("GET /api/solicitudes/{id} devuelve la solicitud si existe")
+    void obtenerPorIdDevuelveSolicitudExistente() throws Exception {
+        Long idExistente = 1L;
+        solicitud sol = crearSolicitudEjemplo(idExistente, "Aire acondicionado roto", estadoSolicitud.ABIERTA);
+
+        // Simulamos que el servicio encuentra la solicitud cuando le pasamos el ID 1
+        given(servicioSolicitud.consultarSolicitud(idExistente)).willReturn(sol);
+
+        // Ejecutamos el GET con la ruta /api/solicitudes/1
+        mockMvc.perform(get("/api/solicitudes/{id}", idExistente)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(idExistente))
+                .andExpect(jsonPath("$.descripcion").value("Aire acondicionado roto"))
+                .andExpect(jsonPath("$.estado").value("ABIERTA"));
+    }
+
     private solicitud crearSolicitudEjemplo(Long id, String descripcion, estadoSolicitud estado) {
         cliente cliente = new cliente(
                 1L,
@@ -76,4 +96,5 @@ class SolicitudControllerTest {
 
         return new solicitud(id, cliente, descripcion);
     }
+
 }

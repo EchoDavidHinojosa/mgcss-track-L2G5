@@ -1,5 +1,5 @@
 package mantenimiento.practica.service;
-
+import org.springframework.stereotype.Service;
 import mantenimiento.practica.domain.cliente;
 import mantenimiento.practica.domain.solicitud;
 import mantenimiento.practica.domain.tecnico;
@@ -8,6 +8,7 @@ import mantenimiento.practica.domain.estadoSolicitud;
 import java.time.LocalDate;
 import java.util.*;
 
+@Service
 public class gestionsolicitudes {
 
     private List<solicitud> solicitudes = new ArrayList<>();
