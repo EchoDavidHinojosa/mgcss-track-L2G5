@@ -1,1 +1,14 @@
-C:\Users\Youssef\WebstormProjects\mgcss-track-L2G5\src\main\java\MantenimientoPractica\Practica\PracticaApplication.java
+C:\Users\Echo\IdeaProjects\mgcss-track-L2G5\src\main\java\mantenimiento\practica\api\AsignarTecnicoRequestDTO.java
+C:\Users\Echo\IdeaProjects\mgcss-track-L2G5\src\main\java\mantenimiento\practica\api\CambiarEstadoRequestDTO.java
+C:\Users\Echo\IdeaProjects\mgcss-track-L2G5\src\main\java\mantenimiento\practica\api\SolicitudController.java
+C:\Users\Echo\IdeaProjects\mgcss-track-L2G5\src\main\java\mantenimiento\practica\api\SolicitudMapper.java
+C:\Users\Echo\IdeaProjects\mgcss-track-L2G5\src\main\java\mantenimiento\practica\api\SolicitudRequestDTO.java
+C:\Users\Echo\IdeaProjects\mgcss-track-L2G5\src\main\java\mantenimiento\practica\api\SolicitudResponseDTO.java
+C:\Users\Echo\IdeaProjects\mgcss-track-L2G5\src\main\java\mantenimiento\practica\domain\cliente.java
+C:\Users\Echo\IdeaProjects\mgcss-track-L2G5\src\main\java\mantenimiento\practica\domain\estadoSolicitud.java
+C:\Users\Echo\IdeaProjects\mgcss-track-L2G5\src\main\java\mantenimiento\practica\domain\solicitud.java
+C:\Users\Echo\IdeaProjects\mgcss-track-L2G5\src\main\java\mantenimiento\practica\domain\tecnico.java
+C:\Users\Echo\IdeaProjects\mgcss-track-L2G5\src\main\java\mantenimiento\practica\PracticaApplication.java
+C:\Users\Echo\IdeaProjects\mgcss-track-L2G5\src\main\java\mantenimiento\practica\service\gestionclientes.java
+C:\Users\Echo\IdeaProjects\mgcss-track-L2G5\src\main\java\mantenimiento\practica\service\gestionsolicitudes.java
+C:\Users\Echo\IdeaProjects\mgcss-track-L2G5\src\main\java\mantenimiento\practica\service\gestionTecnico.java
