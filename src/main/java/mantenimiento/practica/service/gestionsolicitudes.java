@@ -3,7 +3,7 @@ package mantenimiento.practica.service;
 import mantenimiento.practica.domain.cliente;
 import mantenimiento.practica.domain.solicitud;
 import mantenimiento.practica.domain.tecnico;
-import mantenimiento.practica.domain.estadoSolicitud; // Importamos el Enum
+import mantenimiento.practica.domain.estadoSolicitud;
 
 import java.time.LocalDate;
 import java.util.*;
