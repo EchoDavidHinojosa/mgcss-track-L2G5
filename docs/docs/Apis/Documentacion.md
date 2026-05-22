@@ -7,4 +7,5 @@ GET /api/solicitudes  -> Obtiene la última actualización de una solicitud dado
 
 Se puede comprobar con http://localhost:8080/swagger-ui/index.html
 
+
 ![swagger.png](swagger.png)
