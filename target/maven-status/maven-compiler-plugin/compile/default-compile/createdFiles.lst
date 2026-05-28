@@ -1,1 +1,14 @@
-MantenimientoPractica\Practica\PracticaApplication.class
+mantenimiento\practica\domain\estadoSolicitud.class
+mantenimiento\practica\service\gestionTecnico.class
+mantenimiento\practica\api\SolicitudMapper.class
+mantenimiento\practica\PracticaApplication.class
+mantenimiento\practica\service\gestionclientes.class
+mantenimiento\practica\domain\cliente.class
+mantenimiento\practica\api\SolicitudResponseDTO.class
+mantenimiento\practica\api\AsignarTecnicoRequestDTO.class
+mantenimiento\practica\domain\tecnico.class
+mantenimiento\practica\domain\solicitud.class
+mantenimiento\practica\service\gestionsolicitudes.class
+mantenimiento\practica\api\CambiarEstadoRequestDTO.class
+mantenimiento\practica\api\SolicitudRequestDTO.class
+mantenimiento\practica\api\SolicitudController.class

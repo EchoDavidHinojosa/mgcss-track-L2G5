@@ -1,13 +1,14 @@
 package mantenimiento.practica.service;
-
+import org.springframework.stereotype.Service;
 import mantenimiento.practica.domain.cliente;
 import mantenimiento.practica.domain.solicitud;
 import mantenimiento.practica.domain.tecnico;
-import mantenimiento.practica.domain.estadoSolicitud; // Importamos el Enum
+import mantenimiento.practica.domain.estadoSolicitud;
 
 import java.time.LocalDate;
 import java.util.*;
 
+@Service
 public class gestionsolicitudes {
 
     private List<solicitud> solicitudes = new ArrayList<>();
@@ -18,6 +19,18 @@ public class gestionsolicitudes {
         siguienteId++;
         solicitudes.add(nueva);
         return nueva;
+    }
+
+    public solicitud crearSolicitud(String descripcion) {
+
+        cliente clienteDummy =
+                new cliente(
+                        1L,
+                        "Cliente API",
+                        "api@test.com",
+                        false);
+
+        return this.crearSolicitud(clienteDummy,descripcion);
     }
 
     public boolean asignarTecnico(Long idSolicitud, tecnico tecnico) {//False si no lo asigna true si sí

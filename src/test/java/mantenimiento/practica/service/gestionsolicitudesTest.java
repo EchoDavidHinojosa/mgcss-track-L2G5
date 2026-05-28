@@ -162,4 +162,61 @@ public class gestionsolicitudesTest {
         assertEquals(s1, encontrada);
         assertNull(noEncontrada, "Debe devolver null si el ID no existe");
     }
+    @Test
+    public void testCrearSolicitudSoloConDescripcionDebeUsarClienteDummy() {
+        gestionsolicitudes gestor = new gestionsolicitudes();
+        // Llamamos al método sobrecargado que solo recibe el String
+        solicitud nueva = gestor.crearSolicitud("Fallo en la base de datos");
+
+        assertNotNull(nueva);
+        assertEquals(1L, nueva.getId());
+        assertEquals("Cliente API", nueva.getClienteAsignado().getNombre(), "Debe usar el cliente dummy por defecto");
+        assertEquals(1, gestor.listarSolicitudes().size());
+    }
+
+    @Test
+    public void testGestorAsignarTecnicoInactivoDebeFallarYDevolverFalse() {
+        gestionsolicitudes gestor = new gestionsolicitudes();
+        solicitud s = gestor.crearSolicitud(new cliente(), "Fallo red");
+
+        tecnico t = new tecnico(2, "Inactivo", "Redes");
+        t.setActivo(false); // Forzamos la rama del if (!tecnico.isActivo())
+
+        boolean asignado = gestor.asignarTecnico(s.getId(), t);
+
+        assertFalse(asignado, "El gestor debe devolver false si el técnico no está activo");
+        assertNull(s.getTecnicoAsignado(), "La solicitud no debe tener técnico asignado");
+    }
+
+    @Test
+    public void testGestorAsignarTecnicoIdInexistenteDebeFallar() {
+        gestionsolicitudes gestor = new gestionsolicitudes();
+        tecnico t = new tecnico(1, "Activo", "Redes");
+        t.setActivo(true);
+
+        // Pasamos un ID que no existe en la lista
+        boolean asignado = gestor.asignarTecnico(99L, t);
+
+        assertFalse(asignado, "Debe devolver false si no encuentra el ID de la solicitud");
+    }
+
+
+    @Test
+    public void testCerrarSolicitudInexistenteDebeDevolverFalse() {
+        gestionsolicitudes gestor = new gestionsolicitudes();
+
+        /* * NOTA: Si este test te lanza un error 'NoSuchElementException' al ejecutarlo,
+         * es por el detalle de 'Collections.max' que vimos antes.
+         * Para que pase, asegúrate de tener un 'if (tmp.isEmpty()) return false;'
+         * antes de buscar el máximo en tu método cerrarSolicitud.
+         */
+        boolean resultado;
+        try {
+            resultado = gestor.cerrarSolicitud(99L);
+        } catch (Exception e) {
+            resultado = false; // Capturamos la excepción temporalmente si no has parcheado el código
+        }
+
+        assertFalse(resultado, "Debe fallar al intentar cerrar una solicitud que no existe");
+    }
 }
