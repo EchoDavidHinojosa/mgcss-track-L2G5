@@ -1,4 +1,6 @@
+mantenimiento\practica\api\DtosTest.class
 mantenimiento\practica\domain\solicitudTest.class
+mantenimiento\practica\api\SolicitudResponseDTOTest.class
 mantenimiento\practica\PracticaApplicationTests.class
 mantenimiento\practica\service\gestionclientesTest.class
 mantenimiento\practica\service\gestionsolicitudesTest.class
