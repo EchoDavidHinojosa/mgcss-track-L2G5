@@ -30,22 +30,21 @@ public class gestionsolicitudes {
         }
 
         if (tmp.isEmpty()) {
-            // Puedes lanzar una excepción personalizada o retornar null
-            // (si retorna null, recuerda controlarlo en el controlador con un 404)
+
             return null;
         }
 
-        // Obtenemos la versión más actualizada
+
         solicitud masReciente = Collections.max(
                 tmp,
                 Comparator.comparingInt(solicitud::getHistorico)
         );
 
-        // Creamos el nuevo registro para el histórico usando el constructor copia
+
         solicitud registroActualizado = new solicitud(masReciente);
         registroActualizado.setDescripcion(nuevaDescripcion);
 
-        // Lo guardamos en nuestra lista/historial
+
         this.solicitudes.add(registroActualizado);
 
         return registroActualizado;
