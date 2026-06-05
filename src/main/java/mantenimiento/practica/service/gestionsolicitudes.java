@@ -21,6 +21,36 @@ public class gestionsolicitudes {
         return nueva;
     }
 
+    public solicitud actualizarSolicitud(Long idSolicitud, String nuevaDescripcion) {
+        List<solicitud> tmp = new ArrayList<>();
+        for (solicitud s : solicitudes) {
+            if (s.getId().equals(idSolicitud)) {
+                tmp.add(s);
+            }
+        }
+
+        if (tmp.isEmpty()) {
+            // Puedes lanzar una excepción personalizada o retornar null
+            // (si retorna null, recuerda controlarlo en el controlador con un 404)
+            return null;
+        }
+
+        // Obtenemos la versión más actualizada
+        solicitud masReciente = Collections.max(
+                tmp,
+                Comparator.comparingInt(solicitud::getHistorico)
+        );
+
+        // Creamos el nuevo registro para el histórico usando el constructor copia
+        solicitud registroActualizado = new solicitud(masReciente);
+        registroActualizado.setDescripcion(nuevaDescripcion);
+
+        // Lo guardamos en nuestra lista/historial
+        this.solicitudes.add(registroActualizado);
+
+        return registroActualizado;
+    }
+
     public solicitud crearSolicitud(String descripcion) {
 
         cliente clienteDummy =

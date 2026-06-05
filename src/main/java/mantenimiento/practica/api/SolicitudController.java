@@ -1,6 +1,7 @@
 package mantenimiento.practica.api;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import mantenimiento.practica.domain.solicitud;
@@ -8,9 +9,6 @@ import mantenimiento.practica.service.gestionsolicitudes;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.v3.oas.annotations.Parameter;
-import org.springframework.web.bind.annotation.*;
-//Falta : put,path
 
 @RestController
 @RequestMapping("/api/solicitudes")
@@ -22,10 +20,10 @@ public class SolicitudController {
     public SolicitudController(
             gestionsolicitudes servicioSolicitud,
             SolicitudMapper solicitudMapper) {
-
         this.servicioSolicitud = servicioSolicitud;
         this.solicitudMapper = solicitudMapper;
     }
+
     @Operation(
             summary = "Crear una solicitud",
             description = "Registra una nueva solicitud de servicio en estado ABIERTA"
@@ -39,9 +37,7 @@ public class SolicitudController {
             @Valid @RequestBody SolicitudRequestDTO requestDTO) {
 
         solicitud solicitud = servicioSolicitud.crearSolicitud(requestDTO.getDescripcion());
-
-        SolicitudResponseDTO response =solicitudMapper.toResponseDTO(solicitud);
-
+        SolicitudResponseDTO response = solicitudMapper.toResponseDTO(solicitud);
         return ResponseEntity.ok(response);
     }
 
@@ -58,14 +54,65 @@ public class SolicitudController {
             @Parameter(description = "ID de la solicitud a buscar", example = "1")
             @PathVariable Long id) {
 
-
         solicitud solicitud = servicioSolicitud.consultarSolicitud(id);
-
+        if (solicitud == null) {
+            return ResponseEntity.notFound().build();
+        }
 
         SolicitudResponseDTO response = solicitudMapper.toResponseDTO(solicitud);
-
-
         return ResponseEntity.ok(response);
+    }
+
+    @Operation(
+            summary = "Actualizar una solicitud",
+            description = "Modifica la descripción de una solicitud existente mediante su ID"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Solicitud actualizada correctamente"),
+            @ApiResponse(responseCode = "404", description = "Solicitud no encontrada"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos")
+    })
+    @PutMapping("/{id}")
+    public ResponseEntity<SolicitudResponseDTO> actualizarSolicitud(
+            @Parameter(description = "ID de la solicitud a actualizar", example = "1")
+            @PathVariable Long id,
+            @Valid @RequestBody SolicitudRequestDTO requestDTO) {
+
+        solicitud solicitud = servicioSolicitud.actualizarSolicitud(id, requestDTO.getDescripcion());
+
+        // Si el servicio devuelve null significa que no se encontró la solicitud con ese ID
+        if (solicitud == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        SolicitudResponseDTO response = solicitudMapper.toResponseDTO(solicitud);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(
+            summary = "Cambiar estado de la solicitud",
+            description = "Modifica dinámicamente el estado de una solicitud utilizando CambiarEstadoRequestDTO"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Estado cambiado correctamente"),
+            @ApiResponse(responseCode = "404", description = "Solicitud no encontrada"),
+            @ApiResponse(responseCode = "400", description = "No se pudo cambiar el estado o el dato es inválido")
+    })
+    @PatchMapping("/{id}/estado")
+    public ResponseEntity<?> cambiarEstado(
+            @Parameter(description = "ID de la solicitud a modificar", example = "1")
+            @PathVariable Long id,
+            @Valid @RequestBody CambiarEstadoRequestDTO cambiarEstadoDTO) {
+
+        boolean actualizado = servicioSolicitud.rearbirSolicitud(id);
+
+        if (!actualizado) {
+            // Nota: Dado que el servicio devuelve 'false' tanto si no existe como si el Enum falla,
+            // puedes optar por devolver un Bad Request genérico o controlar la existencia previamente.
+            return ResponseEntity.badRequest().body("No se pudo cambiar el estado de la solicitud. Verifique el ID o que el estado sea correcto.");
+        }
+
+        return ResponseEntity.ok("Estado actualizado correctamente a: " + cambiarEstadoDTO.getEstado());
     }
 
     @Operation(
@@ -80,8 +127,7 @@ public class SolicitudController {
     @PutMapping("/{id}/cerrar")
     public ResponseEntity<?> cerrarSolicitud(
             @Parameter(description = "ID de la solicitud a cerrar", example = "1")
-            @PathVariable Long id
-    ) {
+            @PathVariable Long id) {
         boolean cerrada = servicioSolicitud.cerrarSolicitud(id);
 
         if (!cerrada) {
@@ -103,8 +149,7 @@ public class SolicitudController {
     @PutMapping("/{id}/reabrir")
     public ResponseEntity<?> reabrirSolicitud(
             @Parameter(description = "ID de la solicitud a reabrir", example = "1")
-            @PathVariable Long id
-    ) {
+            @PathVariable Long id) {
         boolean reabierta = servicioSolicitud.rearbirSolicitud(id);
 
         if (!reabierta) {
