@@ -187,7 +187,57 @@ public class gestionsolicitudesTest {
         assertFalse(asignado, "El gestor debe devolver false si el técnico no está activo");
         assertNull(s.getTecnicoAsignado(), "La solicitud no debe tener técnico asignado");
     }
+    @Test
+    public void testActualizarSolicitudInexistenteDebeDevolverNull() {
+        gestionsolicitudes gestor = new gestionsolicitudes();
 
+        // Intentamos actualizar un ID que no está registrado en el sistema
+        solicitud resultado = gestor.actualizarSolicitud(999L, "Nueva descripción");
+
+        assertNull(resultado, "Debe devolver null si no encuentra ninguna solicitud con ese ID");
+    }
+
+    @Test
+    public void testActualizarSolicitudDebeCrearNuevoRegistroConHistoricoMasAlto() {
+        gestionsolicitudes gestor = new gestionsolicitudes();
+
+        // 1. Creamos y preparamos el escenario simulando el histórico en la lista de solicitudes.
+        // Nota: Si gestor.crearSolicitud no te permite setear el histórico manualmente,
+        // puedes usar los métodos setHistorico() en los objetos si están disponibles.
+        solicitud s1 = new solicitud(15L, new cliente(), "Descripción antigua V1");
+        s1.setHistorico(1);
+
+        solicitud s2 = new solicitud(15L, new cliente(), "Descripción antigua V2");
+        s2.setHistorico(3); // Este es el más reciente (max)
+
+        solicitud s3 = new solicitud(15L, new cliente(), "Descripción antigua V3");
+        s3.setHistorico(2);
+
+        // Añadimos otra solicitud diferente para asegurarnos de que el filtro por ID funcione correctamente
+        solicitud otraSolicitud = new solicitud(20L, new cliente(), "Otra cosa diferente");
+        otraSolicitud.setHistorico(5);
+
+        // Poblamos la lista del gestor.
+        // Si la lista 'solicitudes' es privada y no tienes un método para añadir,
+        // asegúrate de que estos objetos queden guardados en 'gestor.solicitudes'.
+        gestor.listarSolicitudes().add(s1);
+        gestor.listarSolicitudes().add(s2);
+        gestor.listarSolicitudes().add(s3);
+        gestor.listarSolicitudes().add(otraSolicitud);
+
+        // 2. Ejecutamos la acción
+        String descripcionNueva = "Descripción corregida por el técnico";
+        solicitud actualizada = gestor.actualizarSolicitud(15L, descripcionNueva);
+
+        // 3. Verificaciones
+        assertNotNull(actualizada, "El resultado no debe ser null");
+        assertEquals(descripcionNueva, actualizada.getDescripcion(), "La descripción debe haberse actualizado");
+
+        // Importante: Tu código hace 'new solicitud(masReciente)', por lo que debió clonar s2 (historico = 3)
+        // Dependiendo de cómo funcione tu constructor copia, debería mantener datos del 'masReciente'.
+        // Comprobamos que el gestor ahora tenga una solicitud más en su lista total
+        assertEquals(5, gestor.listarSolicitudes().size(), "La lista debe haber aumentado en 1 tras el nuevo registro");
+    }
     @Test
     public void testGestorAsignarTecnicoIdInexistenteDebeFallar() {
         gestionsolicitudes gestor = new gestionsolicitudes();

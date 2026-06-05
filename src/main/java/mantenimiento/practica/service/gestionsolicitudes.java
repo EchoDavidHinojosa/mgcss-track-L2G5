@@ -21,6 +21,35 @@ public class gestionsolicitudes {
         return nueva;
     }
 
+    public solicitud actualizarSolicitud(Long idSolicitud, String nuevaDescripcion) {
+        List<solicitud> tmp = new ArrayList<>();
+        for (solicitud s : solicitudes) {
+            if (s.getId().equals(idSolicitud)) {
+                tmp.add(s);
+            }
+        }
+
+        if (tmp.isEmpty()) {
+
+            return null;
+        }
+
+
+        solicitud masReciente = Collections.max(
+                tmp,
+                Comparator.comparingInt(solicitud::getHistorico)
+        );
+
+
+        solicitud registroActualizado = new solicitud(masReciente);
+        registroActualizado.setDescripcion(nuevaDescripcion);
+
+
+        this.solicitudes.add(registroActualizado);
+
+        return registroActualizado;
+    }
+
     public solicitud crearSolicitud(String descripcion) {
 
         cliente clienteDummy =
