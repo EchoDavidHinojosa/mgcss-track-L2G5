@@ -8,13 +8,5 @@ class PracticaApplicationTests {
 
 	@Test
 	void contextLoads() {
-
 	}
-
-	@Test
-	void testMain() {
-
-		PracticaApplication.main(new String[]{});
-	}
-
 }

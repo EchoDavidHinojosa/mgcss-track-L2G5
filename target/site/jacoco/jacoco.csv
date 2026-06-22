@@ -1,0 +1,15 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+mgcss-track-grupo8,mantenimiento.practica,PracticaApplication,5,3,0,0,2,1,1,1,1,1
+mgcss-track-grupo8,mantenimiento.practica.api,CambiarEstadoRequestDTO,0,16,0,0,0,8,0,4,0,4
+mgcss-track-grupo8,mantenimiento.practica.api,SolicitudMapper,2,16,1,1,1,6,1,2,0,2
+mgcss-track-grupo8,mantenimiento.practica.api,SolicitudController,3,102,1,9,1,28,1,11,0,7
+mgcss-track-grupo8,mantenimiento.practica.api,SolicitudRequestDTO,7,9,0,0,3,4,2,2,2,2
+mgcss-track-grupo8,mantenimiento.practica.api,SolicitudResponseDTO,0,36,0,0,0,16,0,8,0,8
+mgcss-track-grupo8,mantenimiento.practica.api,AsignarTecnicoRequestDTO,0,16,0,0,0,8,0,4,0,4
+mgcss-track-grupo8,mantenimiento.practica.service,gestionclientes,6,111,4,6,4,23,4,6,0,5
+mgcss-track-grupo8,mantenimiento.practica.service,gestionsolicitudes,7,313,6,30,4,80,6,21,0,9
+mgcss-track-grupo8,mantenimiento.practica.service,gestionTecnico,23,67,5,7,7,16,4,7,1,4
+mgcss-track-grupo8,mantenimiento.practica.domain,estadoSolicitud,0,21,0,0,0,4,0,1,0,1
+mgcss-track-grupo8,mantenimiento.practica.domain,tecnico,1,71,1,5,0,17,1,9,0,7
+mgcss-track-grupo8,mantenimiento.practica.domain,solicitud,12,124,0,6,6,41,3,19,3,16
+mgcss-track-grupo8,mantenimiento.practica.domain,cliente,0,46,0,0,0,20,0,10,0,10

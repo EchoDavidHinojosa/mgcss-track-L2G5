@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SolicitudController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mgcss-track-grupo8</a> &gt; <a href="index.source.html" class="el_package">mantenimiento.practica.api</a> &gt; <span class="el_source">SolicitudController.java</span></div><h1>SolicitudController.java</h1><pre class="source lang-java linenums">package mantenimiento.practica.api;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import mantenimiento.practica.domain.solicitud;
+import mantenimiento.practica.service.gestionsolicitudes;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping(&quot;/api/solicitudes&quot;)
+public class SolicitudController {
+
+    private final gestionsolicitudes servicioSolicitud;
+    private final SolicitudMapper solicitudMapper;
+
+    public SolicitudController(
+            gestionsolicitudes servicioSolicitud,
+<span class="fc" id="L22">            SolicitudMapper solicitudMapper) {</span>
+<span class="fc" id="L23">        this.servicioSolicitud = servicioSolicitud;</span>
+<span class="fc" id="L24">        this.solicitudMapper = solicitudMapper;</span>
+<span class="fc" id="L25">    }</span>
+
+    @Operation(
+            summary = &quot;Crear una solicitud&quot;,
+            description = &quot;Registra una nueva solicitud de servicio en estado ABIERTA&quot;
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Solicitud creada correctamente&quot;),
+            @ApiResponse(responseCode = &quot;400&quot;, description = &quot;Datos de entrada inválidos&quot;)
+    })
+    @PostMapping
+    public ResponseEntity&lt;SolicitudResponseDTO&gt; crearSolicitud(
+            @Valid @RequestBody SolicitudRequestDTO requestDTO) {
+
+<span class="fc" id="L39">        solicitud solicitud = servicioSolicitud.crearSolicitud(requestDTO.getDescripcion());</span>
+<span class="fc" id="L40">        SolicitudResponseDTO response = solicitudMapper.toResponseDTO(solicitud);</span>
+<span class="fc" id="L41">        return ResponseEntity.ok(response);</span>
+    }
+
+    @Operation(
+            summary = &quot;Obtener una solicitud por ID&quot;,
+            description = &quot;Recupera los detalles de una solicitud específica mediante su identificador único&quot;
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Solicitud encontrada&quot;),
+            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Solicitud no encontrada&quot;)
+    })
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;SolicitudResponseDTO&gt; obtenerPorId(
+            @Parameter(description = &quot;ID de la solicitud a buscar&quot;, example = &quot;1&quot;)
+            @PathVariable Long id) {
+
+<span class="fc" id="L57">        solicitud solicitud = servicioSolicitud.consultarSolicitud(id);</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        if (solicitud == null) {</span>
+<span class="nc" id="L59">            return ResponseEntity.notFound().build();</span>
+        }
+
+<span class="fc" id="L62">        SolicitudResponseDTO response = solicitudMapper.toResponseDTO(solicitud);</span>
+<span class="fc" id="L63">        return ResponseEntity.ok(response);</span>
+    }
+
+    @Operation(
+            summary = &quot;Actualizar una solicitud&quot;,
+            description = &quot;Modifica la descripción de una solicitud existente mediante su ID&quot;
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Solicitud actualizada correctamente&quot;),
+            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Solicitud no encontrada&quot;),
+            @ApiResponse(responseCode = &quot;400&quot;, description = &quot;Datos de entrada inválidos&quot;)
+    })
+    @PutMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;SolicitudResponseDTO&gt; actualizarSolicitud(
+            @Parameter(description = &quot;ID de la solicitud a actualizar&quot;, example = &quot;1&quot;)
+            @PathVariable Long id,
+            @Valid @RequestBody SolicitudRequestDTO requestDTO) {
+
+<span class="fc" id="L81">        solicitud solicitud = servicioSolicitud.actualizarSolicitud(id, requestDTO.getDescripcion());</span>
+
+        // Si el servicio devuelve null significa que no se encontró la solicitud con ese ID
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        if (solicitud == null) {</span>
+<span class="fc" id="L85">            return ResponseEntity.notFound().build();</span>
+        }
+
+<span class="fc" id="L88">        SolicitudResponseDTO response = solicitudMapper.toResponseDTO(solicitud);</span>
+<span class="fc" id="L89">        return ResponseEntity.ok(response);</span>
+    }
+
+    @Operation(
+            summary = &quot;Cambiar estado de la solicitud&quot;,
+            description = &quot;Modifica dinámicamente el estado de una solicitud utilizando CambiarEstadoRequestDTO&quot;
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Estado cambiado correctamente&quot;),
+            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Solicitud no encontrada&quot;),
+            @ApiResponse(responseCode = &quot;400&quot;, description = &quot;No se pudo cambiar el estado o el dato es inválido&quot;)
+    })
+    @PatchMapping(&quot;/{id}/estado&quot;)
+    public ResponseEntity&lt;?&gt; cambiarEstado(
+            @Parameter(description = &quot;ID de la solicitud a modificar&quot;, example = &quot;1&quot;)
+            @PathVariable Long id,
+            @Valid @RequestBody CambiarEstadoRequestDTO cambiarEstadoDTO) {
+
+<span class="fc" id="L107">        boolean actualizado = servicioSolicitud.rearbirSolicitud(id);</span>
+
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (!actualizado) {</span>
+            // Nota: Dado que el servicio devuelve 'false' tanto si no existe como si el Enum falla,
+            // puedes optar por devolver un Bad Request genérico o controlar la existencia previamente.
+<span class="fc" id="L112">            return ResponseEntity.badRequest().body(&quot;No se pudo cambiar el estado de la solicitud. Verifique el ID o que el estado sea correcto.&quot;);</span>
+        }
+
+<span class="fc" id="L115">        return ResponseEntity.ok(&quot;Estado actualizado correctamente a: &quot; + cambiarEstadoDTO.getEstado());</span>
+    }
+
+    @Operation(
+            summary = &quot;Cerrar una solicitud&quot;,
+            description = &quot;Cierra una solicitud existente si está en estado EN_PROCESO&quot;
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Solicitud cerrada correctamente&quot;),
+            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Solicitud no encontrada&quot;),
+            @ApiResponse(responseCode = &quot;400&quot;, description = &quot;No se puede cerrar la solicitud&quot;)
+    })
+    @PutMapping(&quot;/{id}/cerrar&quot;)
+    public ResponseEntity&lt;?&gt; cerrarSolicitud(
+            @Parameter(description = &quot;ID de la solicitud a cerrar&quot;, example = &quot;1&quot;)
+            @PathVariable Long id) {
+<span class="fc" id="L131">        boolean cerrada = servicioSolicitud.cerrarSolicitud(id);</span>
+
+<span class="fc bfc" id="L133" title="All 2 branches covered.">        if (!cerrada) {</span>
+<span class="fc" id="L134">            return ResponseEntity.badRequest().body(&quot;No se pudo cerrar la solicitud&quot;);</span>
+        }
+
+<span class="fc" id="L137">        return ResponseEntity.ok(&quot;Solicitud cerrada correctamente&quot;);</span>
+    }
+
+    @Operation(
+            summary = &quot;Reabrir una solicitud&quot;,
+            description = &quot;Reabre una solicitud existente si está en estado CERRADA&quot;
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Solicitud reabierta correctamente&quot;),
+            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Solicitud no encontrada&quot;),
+            @ApiResponse(responseCode = &quot;400&quot;, description = &quot;No se puede reabrir la solicitud&quot;)
+    })
+    @PutMapping(&quot;/{id}/reabrir&quot;)
+    public ResponseEntity&lt;?&gt; reabrirSolicitud(
+            @Parameter(description = &quot;ID de la solicitud a reabrir&quot;, example = &quot;1&quot;)
+            @PathVariable Long id) {
+<span class="fc" id="L153">        boolean reabierta = servicioSolicitud.rearbirSolicitud(id);</span>
+
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        if (!reabierta) {</span>
+<span class="fc" id="L156">            return ResponseEntity.badRequest().body(&quot;No se pudo reabrir la solicitud&quot;);</span>
+        }
+
+<span class="fc" id="L159">        return ResponseEntity.ok(&quot;Solicitud reabierta correctamente&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
