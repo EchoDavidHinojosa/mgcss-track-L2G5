@@ -8,9 +8,12 @@ permissions:
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+      - rama-nueva
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build:
